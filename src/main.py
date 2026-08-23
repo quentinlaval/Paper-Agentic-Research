@@ -220,6 +220,15 @@ article, dans le même ordre, avec exactement ce format :
         results = json.loads(text)
     except Exception as e:
         print(f"[warn] Scoring Gemini échoué pour un lot de {len(records)} papiers: {e}")
+        try:
+            lst = requests.get(
+                "https://generativelanguage.googleapis.com/v1beta/models",
+                params={"key": api_key}, timeout=15,
+            ).json()
+            names = [m["name"] for m in lst.get("models", []) if "generateContent" in m.get("supportedGenerationMethods", [])]
+            print(f"[debug] Modèles disponibles pour cette clé: {names}")
+        except Exception:
+            pass
         return []
 
     scored = []
@@ -235,7 +244,7 @@ article, dans le même ordre, avec exactement ce format :
     return scored
 
 
-def score_all(records, interests, api_key, model, batch_size=8, pause_seconds=15):
+def score_all(records, interests, api_key, model, batch_size=8, pause_seconds=10):
     scored = []
     for i in range(0, len(records), batch_size):
         batch = records[i:i + batch_size]
