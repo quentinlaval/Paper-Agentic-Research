@@ -1,0 +1,41 @@
+name: Veille scientifique
+
+on:
+  schedule:
+    # Tous les lundis à 7h UTC. Si vous changez ceci, mettez aussi à jour
+    # "days_back" dans config.yaml pour qu'il couvre bien l'intervalle.
+    - cron: "0 7 * * MON"
+  workflow_dispatch: {}  # permet de lancer le workflow manuellement depuis l'onglet Actions
+
+permissions:
+  contents: write  # nécessaire pour committer la mise à jour de seen_ids.json
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: Générer et envoyer le digest
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: python src/main.py
+
+      - name: Sauvegarder l'historique des articles déjà vus
+        run: |
+          git config user.name "veille-bot"
+          git config user.email "veille-bot@users.noreply.github.com"
+          git add seen_ids.json
+          git diff --cached --quiet || git commit -m "Mise à jour seen_ids.json [skip ci]"
+          git push
