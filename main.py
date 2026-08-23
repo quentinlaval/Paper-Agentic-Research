@@ -235,7 +235,7 @@ article, dans le même ordre, avec exactement ce format :
     return scored
 
 
-def score_all(records, interests, api_key, model, batch_size=8, pause_seconds=4):
+def score_all(records, interests, api_key, model, batch_size=8, pause_seconds=15):
     scored = []
     for i in range(0, len(records), batch_size):
         batch = records[i:i + batch_size]
