@@ -109,6 +109,7 @@ def fetch_openalex(keyword, since_date, per_page, contact_email, api_key):
             ),
             "date": w.get("publication_date", "") or "",
             "url": w.get("id", ""),
+            "doi": w.get("doi", "") or "",
         })
     return records
 
@@ -151,6 +152,7 @@ def fetch_arxiv(keyword, categories, max_results):
             "authors": authors,
             "date": published,
             "url": arxiv_id,
+            "doi": "",
         })
     return records
 
@@ -266,6 +268,116 @@ def score_all(records, interests, api_key, model, batch_size=8, pause_seconds=10
 
 # ───────────────────────── Digest & envoi ─────────────────────────
 
+# ───────────────────────── Site GitHub Pages ─────────────────────────
+
+DOCS_DIR = "docs"
+WEEKS_DIR = os.path.join(DOCS_DIR, "weeks")
+WEEKS_META_FILE = os.path.join(DOCS_DIR, "weeks.json")
+
+PAGE_TEMPLATE = """<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{css_path}">
+</head>
+<body>
+<div class="page">
+{content}
+</div>
+</body>
+</html>"""
+
+
+def html_escape(s):
+    return (s or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def load_weeks_meta():
+    if os.path.exists(WEEKS_META_FILE):
+        with open(WEEKS_META_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+
+def save_weeks_meta(meta):
+    os.makedirs(DOCS_DIR, exist_ok=True)
+    with open(WEEKS_META_FILE, "w", encoding="utf-8") as f:
+        json.dump(meta, f, ensure_ascii=False, indent=2)
+
+
+def build_week_page(candidates, selected_ids, period_label):
+    rows = ""
+    for r in sorted(candidates, key=lambda r: r["date"], reverse=True):
+        selected = r["id"] in selected_ids
+        link = r.get("doi") or r["url"]
+        badge = '<span class="badge">Sélectionné · envoyé par email</span>' if selected else ""
+        rows += f"""
+        <article class="paper">
+          <div class="paper-bar {'bar-selected' if selected else ''}"></div>
+          <div class="paper-body">
+            <h3 class="title{' selected' if selected else ''}"><a href="{html_escape(link)}" target="_blank" rel="noopener">{html_escape(r['title'])}</a></h3>
+            {badge}
+            <p class="meta">{html_escape(r['authors'])} — {html_escape(r['date'])} — {html_escape(r['source'])}</p>
+            <p class="doi">DOI : {html_escape(r.get('doi') or '—')}</p>
+            <p class="abstract">{html_escape(r['abstract'])}</p>
+          </div>
+        </article>"""
+    content = f"""
+      <a class="back" href="../index.html">← Retour à l'accueil</a>
+      <h1>{html_escape(period_label)}</h1>
+      <p class="count">{len(candidates)} article(s) trouvé(s) après filtres, {len(selected_ids)} retenu(s) et envoyé(s) par email.</p>
+      <div class="papers">{rows}</div>"""
+    return PAGE_TEMPLATE.format(title=f"Veille — {period_label}", css_path="../assets/style.css", content=content)
+
+
+def build_index_html(weeks_meta):
+    weeks_sorted = sorted(weeks_meta, key=lambda w: w["date"], reverse=True)
+    years = sorted({w["year"] for w in weeks_sorted}, reverse=True)
+    sections = ""
+    for y in years:
+        items = "".join(
+            f"""<li><a class="week-link" href="weeks/{w['filename']}">
+                  <span class="week-range">{html_escape(w['period_label'])}</span>
+                  <span class="week-count">{w['selected']}/{w['total']} retenus</span>
+                </a></li>"""
+            for w in weeks_sorted if w["year"] == y
+        )
+        sections += f"""<details class="year-block" {"open" if y == years[0] else ""}>
+          <summary>{y}</summary>
+          <ul class="week-list">{items}</ul>
+        </details>"""
+    body = sections or '<p class="empty">Aucune veille pour le moment — revenez après le premier run.</p>'
+    content = f"""
+      <h1>Veille scientifique</h1>
+      <p class="subtitle">Archive hebdomadaire des articles suivis automatiquement.</p>
+      <div class="years">{body}</div>"""
+    return PAGE_TEMPLATE.format(title="Veille scientifique", css_path="assets/style.css", content=content)
+
+
+def update_site(candidates, selected_ids, period_label, run_date):
+    os.makedirs(WEEKS_DIR, exist_ok=True)
+    week_filename = f"{run_date}.html"
+    with open(os.path.join(WEEKS_DIR, week_filename), "w", encoding="utf-8") as f:
+        f.write(build_week_page(candidates, selected_ids, period_label))
+
+    weeks_meta = [w for w in load_weeks_meta() if w["filename"] != week_filename]
+    weeks_meta.append({
+        "date": run_date,
+        "year": int(run_date[:4]),
+        "period_label": period_label,
+        "filename": week_filename,
+        "total": len(candidates),
+        "selected": len(selected_ids),
+    })
+    save_weeks_meta(weeks_meta)
+    with open(os.path.join(DOCS_DIR, "index.html"), "w", encoding="utf-8") as f:
+        f.write(build_index_html(weeks_meta))
+
+
 def build_digest_html(papers, period_label):
     if not papers:
         return f"<p>Aucun nouvel article suffisamment pertinent trouvé ({period_label}).</p>"
@@ -300,6 +412,7 @@ def send_email(subject, html_body, user, password, to_addr):
 def main():
     config = load_config()
     since_date = (dt.date.today() - dt.timedelta(days=config["days_back"])).isoformat()
+    today = dt.date.today().isoformat()
     seen_ids = load_seen_ids()
 
     all_records = []
@@ -312,7 +425,7 @@ def main():
             all_records += fetch_arxiv(kw, config["arxiv_categories"], config["max_results_per_query"])
 
     # sécurité supplémentaire : on ne garde que les papiers dans la fenêtre demandée
-    all_records = [r for r in all_records if r["date"] >= since_date]
+    all_records = [r for r in all_records if since_date <= r["date"] <= today]
 
     candidates = dedupe(all_records, seen_ids)
     candidates = keyword_filter(candidates, config["keywords"])
@@ -336,6 +449,9 @@ def main():
     )[: config["top_n"]]
 
     period_label = f"{since_date} → {dt.date.today().isoformat()}"
+    selected_ids = {r["id"] for r in top}
+    update_site(candidates, selected_ids, period_label, dt.date.today().isoformat())
+
     html = build_digest_html(top, period_label)
 
     send_always = os.environ.get("SEND_EMPTY_DIGEST", "false").lower() == "true"

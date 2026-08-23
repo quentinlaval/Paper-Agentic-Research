@@ -57,6 +57,12 @@ vérifier que tout fonctionne, puis regardez votre boîte mail.
 Le cron par défaut est réglé sur tous les lundis à 7h UTC — modifiable
 dans `.github/workflows/paper-digest.yml`.
 
+### 7. Activer le site GitHub Pages
+**Settings → Pages** → Source : "Deploy from a branch" → Branch : `main`,
+dossier `/docs` → **Save**. Le site (page d'accueil + une page par semaine,
+articles retenus/envoyés en vert) se met à jour automatiquement à chaque
+run, à l'adresse `https://<votre-user>.github.io/<votre-repo>/`.
+
 ## Comment ça marche
 
 1. **Récupération** : pour chaque mot-clé, interroge l'API OpenAlex
@@ -88,11 +94,3 @@ dans `.github/workflows/paper-digest.yml`.
   renseigné) — non limitant ici.
 - **arXiv** : pas de clé requise, usage raisonnable attendu (quelques
   requêtes espacées, ce qui est le cas ici).
-
-## Pour aller plus loin
-
-- Ajouter Slack/Telegram en plus de l'email : dupliquer `send_email()`
-  avec un appel à un webhook.
-- Publier l'historique complet en plus de l'email : committer aussi un
-  `digest/YYYY-MM-DD.md` à chaque run pour garder une archive consultable
-  sur GitHub.
