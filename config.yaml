@@ -18,24 +18,41 @@ keywords:
 # Taxonomie complète : https://arxiv.org/category_taxonomy
 arxiv_categories:
   - "stat.AP"
+  - "math.ST"
+  - "math.OC"
+  - "math.NA"
+  - "math.DS"
+  - "math.CA"
+  - "stat.CO"
+  - "stat.ME"
+  - "stat.ML"
+  - "stat.OT"
+  - "stat.TH"
+  - "q-bio.PE"
+  - "q-bio.QM"
+  - "q-bio.OT"
+  - "q-bio.MN"
+  - "q-bio.CB"
+  - "q-bio.GN"
+  - "q-bio.BM"
 
 # Nombre de jours couverts à chaque exécution.
 # Doit être >= à l'intervalle du cron dans le workflow (voir .github/workflows)
 # pour ne rater aucun papier entre deux exécutions.
-days_back: 7
+days_back: 8
 
 # Nombre max de résultats demandés par mot-clé et par source
 max_results_per_query: 15
 
 # Nombre de papiers gardés dans le digest final (les mieux notés)
-top_n: 8
+top_n: 20
 
 # Score de pertinence minimum (0-10, attribué par le LLM) pour être retenu
 min_score: 6
 
 # Email de contact (recommandé, pas obligatoire) pour la "pool polie"
 # d'OpenAlex, qui offre un accès plus rapide et plus fiable.
-contact_email: "votre-email@example.com"
+contact_email: ""
 
 # Modèle Gemini utilisé pour le scoring. Si ce modèle est retiré un jour,
 # la liste à jour est ici : https://ai.google.dev/gemini-api/docs/models
