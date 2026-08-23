@@ -4,7 +4,7 @@ on:
   schedule:
     # Tous les lundis à 7h UTC. Si vous changez ceci, mettez aussi à jour
     # "days_back" dans config.yaml pour qu'il couvre bien l'intervalle.
-    - cron: "0 7 * * MON"
+    - cron: "0 4 * * MON"
   workflow_dispatch: {}  # permet de lancer le workflow manuellement depuis l'onglet Actions
 
 permissions:
