@@ -479,6 +479,8 @@ def main():
     update_site(candidates, selected_ids, period_label, dt.date.today().isoformat())
 
     html = build_digest_html(top, period_label)
+    # Add link to website
+    html += """<div> <a href="https://quentinlaval.github.io/Paper-Agentic-Research/"> website </a> </div>"""
 
     send_always = os.environ.get("SEND_EMPTY_DIGEST", "false").lower() == "true"
     if top or send_always:
