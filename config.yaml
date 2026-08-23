@@ -5,13 +5,14 @@
 # ─────────────────────────────────────────────────────────────
 interests: >
   Je m'intéresse aux mathématiques appliquées à la vaccinologie,
-  les méthodes statistiques à des études vaccinales
+  les méthodes statistiques à des études vaccinales, en lien avec le séquençage RNA (bulk RNA-seq, scRNA-seq)
 
 # Mots-clés utilisés pour interroger les APIs (OpenAlex, arXiv) et comme
 # filtre de sécurité gratuit avant d'appeler le LLM. Un papier doit
 # contenir au moins un de ces mots-clés dans son titre ou son résumé.
 keywords:
   - "Vaccine"
+  - "Statistical"
 
 # Catégories arXiv à surveiller en plus d'OpenAlex.
 # Laissez la liste vide ([]) pour désactiver la source arXiv.
