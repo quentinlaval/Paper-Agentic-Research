@@ -187,7 +187,7 @@ def keyword_filter(records, keywords):
 
 # ───────────────────────── Scoring LLM (Gemini) ─────────────────────────
 
-def score_batch(records, interests, api_key, model):
+def score_batch(records, interests, api_key, model, max_retries=3):
     if not records:
         return []
 
@@ -212,24 +212,34 @@ article, dans le même ordre, avec exactement ce format :
         "generationConfig": {"responseMimeType": "application/json", "temperature": 0.2},
     }
     url = GEMINI_URL_TMPL.format(model=model)
-    try:
-        r = requests.post(url, params={"key": api_key}, json=payload, timeout=60)
-        r.raise_for_status()
-        data = r.json()
-        text = data["candidates"][0]["content"]["parts"][0]["text"]
-        results = json.loads(text)
-    except Exception as e:
-        print(f"[warn] Scoring Gemini échoué pour un lot de {len(records)} papiers: {e}")
+    for attempt in range(max_retries):
         try:
-            lst = requests.get(
-                "https://generativelanguage.googleapis.com/v1beta/models",
-                params={"key": api_key}, timeout=15,
-            ).json()
-            names = [m["name"] for m in lst.get("models", []) if "generateContent" in m.get("supportedGenerationMethods", [])]
-            print(f"[debug] Modèles disponibles pour cette clé: {names}")
-        except Exception:
-            pass
-        raise
+            r = requests.post(url, params={"key": api_key}, json=payload, timeout=60)
+            r.raise_for_status()
+            data = r.json()
+            text = data["candidates"][0]["content"]["parts"][0]["text"]
+            results = json.loads(text)
+            break
+        except requests.exceptions.HTTPError as e:
+            if e.response is not None and e.response.status_code in (503, 429) and attempt < max_retries - 1:
+                wait = 10 * (attempt + 1)
+                print(f"[warn] {e.response.status_code}, nouvelle tentative dans {wait}s...")
+                time.sleep(wait)
+                continue
+            print(f"[warn] Scoring Gemini échoué pour un lot de {len(records)} papiers: {e}")
+            try:
+                lst = requests.get(
+                    "https://generativelanguage.googleapis.com/v1beta/models",
+                    params={"key": api_key}, timeout=15,
+                ).json()
+                names = [m["name"] for m in lst.get("models", []) if "generateContent" in m.get("supportedGenerationMethods", [])]
+                print(f"[debug] Modèles disponibles pour cette clé: {names}")
+            except Exception:
+                pass
+            raise
+        except Exception as e:
+            print(f"[warn] Scoring Gemini échoué pour un lot de {len(records)} papiers: {e}")
+            raise
 
     scored = []
     for item in results:
