@@ -13,8 +13,108 @@
 
       <a class="back" href="../index.html">← Retour à l'accueil</a>
       <h1>2026-08-15 → 2026-08-23</h1>
-      <p class="count">0 article(s) trouvé(s) après filtres, 0 retenu(s) et envoyé(s) par email.</p>
-      <div class="papers"></div>
+      <p class="count">10 article(s) trouvé(s) après filtres, 3 retenu(s) et envoyé(s) par email.</p>
+      <div class="papers">
+        <article class="paper">
+          <div class="paper-bar bar-selected"></div>
+          <div class="paper-body">
+            <h3 class="title selected"><a href="http://arxiv.org/abs/2608.20253v1" target="_blank" rel="noopener">GENIE: Generative Neural Inference for Epidemics</a></h3>
+            <span class="badge">Sélectionné · envoyé par email</span>
+            <p class="meta">Laura M. Guzmán-Rincón, George R. E. Bradley, Joel Kandiah, Kyriakos Flouris, Pietro Liò — 2026-08-20 — arxiv</p>
+            <p class="doi">DOI : —</p>
+            <p class="abstract">The SARS-CoV-2 pandemic highlighted the ongoing risk infectious diseases pose to society and the value of reliable information on the likely future burden. When forecasting an epidemic at fine spatial resolution, traditionally used mechanistic compartmental model struggle to capture highly complex granular transmission dynamics, resulting in inaccurate and overconfident forecasts. However, detailed Agent-Based Models (ABMs), are challenging to calibrate and are too computationally expensive to use in real-time. Amortized simulation-based inference promises to overcome this difficulty by exploiting the power of machine learning (ML) to perform approximate forecasting at near-real-time using arbitrarily complex models of epidemics. In this work we introduce Generative Neural Inference for Epidemics (GENIE), a spatio-temporal ML-based framework for high-resolution forecasting of the burden of respiratory pathogens. GENIE is designed to reflect two key characteristics of outbreaks: (i) shared biological mechanisms across locations and (ii) location-specific characteristics affecting transmission dynamics. This results in the model architecture having two modules: (i) a Local Infection Encoder - which learns to represent disease dynamics shared across all locations and (ii) a Local Profile Encoder - which learns location-specific representations. Using simulations from a high-resolution spatio-temporal ABM, GENIE is trained to generate samples from an approximate posterior predictive distribution of future epidemic trajectories. Benchmarked against established statistical and ML models, GENIE demonstrates superior performance across a range of measures including the timing and magnitude of peak hospitalisations.</p>
+          </div>
+        </article>
+        <article class="paper">
+          <div class="paper-bar bar-selected"></div>
+          <div class="paper-body">
+            <h3 class="title selected"><a href="http://arxiv.org/abs/2608.20080v1" target="_blank" rel="noopener">Causal inference via propensity scores for case-control studies</a></h3>
+            <span class="badge">Sélectionné · envoyé par email</span>
+            <p class="meta">Yan Liu, Anita Koushik, Philippe Boileau, Cong Jiang, Miceline Mésidor — 2026-08-20 — arxiv</p>
+            <p class="doi">DOI : —</p>
+            <p class="abstract">Propensity score methods for causal inference are increasingly being used in cohort and experimental designs, but their development and uptake in outcome-dependent sampling schemes, such as case-control studies, remains limited. Case-control studies involve the sampling of individuals with and without an outcome of interest with the goal of estimating the effects of past exposures. When the design is observational, statistical adjustment for confounding bias is necessary. In case-control studies, propensity score models can be fit using control data under the assumption that the controls are representative of the source population with respect to their exposure distribution conditional on covariates ("control exchangeability"). In this paper, we first demonstrate that relative effects, such as causal risk ratios, are estimable under three different case-control design variants using control-fitted propensity scores. We appropriate two existing estimators for these designs: inverse probability of treatment weighting and an efficient and doubly robust estimator. We also introduce a novel two-step propensity score caliper-matching procedure for case-control designs. We introduce novel diagnostic tools to verify two necessary types of overlap. We then contrast our estimators using simulated data and apply them to examine the association between regular aspirin use and ovarian cancer risk.</p>
+          </div>
+        </article>
+        <article class="paper">
+          <div class="paper-bar "></div>
+          <div class="paper-body">
+            <h3 class="title"><a href="http://arxiv.org/abs/2608.19785v1" target="_blank" rel="noopener">Learning piecewise-smooth dynamical systems</a></h3>
+            
+            <p class="meta">Davide Murari, Erik Jansson, Chris Budd OBE, Carola-Bibiane Schönlieb — 2026-08-20 — arxiv</p>
+            <p class="doi">DOI : —</p>
+            <p class="abstract">Discovering dynamical systems from trajectory data is a central problem in applied mathematics and engineering. Whilst recent advances in machine learning have led to strong progress in data-driven system identification, much less attention has been given to systems with discontinuous dynamics. These systems are nevertheless highly relevant in applications, including climate dynamics and mechanical systems with friction. In this work, we consider the problem of identifying piecewise-smooth dynamical systems directly from trajectory data. Compared with the smooth setting, this requires recovering the governing equations and detecting the switching hyperplanes that separate different dynamical regimes and characterising their behaviour, such as sliding motion. We present a modular framework for discovering such systems by first estimating switching hyperplanes from data and then learning smooth dynamics within each region using geometry-constrained neural networks. The geometry-learning phase is studied from a statistical perspective, analysing the identifiability of the discontinuities and the robustness of the procedure. We also introduce a novel neural network architecture with a prescribed discontinuity set, and provide a theoretical analysis of its approximation properties. The approach is tested on low-dimensional benchmark problems, including dry-friction oscillators and the PP04 climate model for the ice ages.</p>
+          </div>
+        </article>
+        <article class="paper">
+          <div class="paper-bar "></div>
+          <div class="paper-body">
+            <h3 class="title"><a href="http://arxiv.org/abs/2608.19767v1" target="_blank" rel="noopener">skchange: Fast and Flexible Algorithms for Changepoint Detection</a></h3>
+            
+            <p class="meta">Martin Tveten, Johannes Voll Kolstø, Per August Jarval Moen — 2026-08-20 — arxiv</p>
+            <p class="doi">DOI : —</p>
+            <p class="abstract">Skchange is an open-source Python library for detecting structural changes in time series. It implements modern change detection algorithms within a unified and extensible framework. The algorithms are modular and composable, and they include changepoint search methods based on both cost minimisation and statistical tests. Key features include the detection of anomalous segments in addition to changepoints; theoretically well-founded fast and approximate search methods; theoretically well-founded algorithms for high-dimensional data, covering settings where either few or many features change simultaneously; utilities for automatic and data-driven penalty calibration, which balances false alarms against missed detections; and a large collection of built-in costs and statistical tests. The design follows established scikit-learn conventions to streamline both user and contributor experience, and Numba is used extensively to achieve high computational performance. Source code and documentation are available at https://github.com/NorskRegnesentral/skchange.</p>
+          </div>
+        </article>
+        <article class="paper">
+          <div class="paper-bar "></div>
+          <div class="paper-body">
+            <h3 class="title"><a href="http://arxiv.org/abs/2608.19718v1" target="_blank" rel="noopener">Information-Computation Inversion in Pseudo-Marginal MCMC</a></h3>
+            
+            <p class="meta">Zihan Xu — 2026-08-20 — arxiv</p>
+            <p class="doi">DOI : —</p>
+            <p class="abstract">Pseudo-marginal MCMC is exact under nonnegative unbiased likelihood estimation, but observation design can change both posterior information and the stochastic law of the likelihood estimator. We study fixed-horizon recovery of a declared posterior functional under this joint change. For a broad fresh-estimator pseudo-marginal class, we derive an inverse-weight acceptance bound that yields a lower bound on functional mean-squared error from high retained-weight mass in discrepant states. A two-region corollary establishes an information-computation inversion: stronger exact posterior separation can coexist with worse finite-horizon recovery when the estimator law changes. The obstruction motivates an exact route-conditioned transition that allocates coupled auxiliary inheritance and independent refreshment according to a scientific pair route. In a controlled transcription experiment, a finer observation strengthens likelihood separation while degrading particle-filter reliability and finite-chain behavior. In a fresh 96-state gene-network comparison, route conditioning reduces measured particle-filter wall time by 42.4% in the frozen execution (95% retained-state bootstrap interval 39.6%-45.2%). Recovery uncertainty spans the predeclared noninferiority margin. A prospective Lotka-Volterra experiment supports portability of the retained-state route-restoration mechanism. The results distinguish statistical information, retained-state functional risk, and auxiliary-computation allocation in pseudo-marginal inference.</p>
+          </div>
+        </article>
+        <article class="paper">
+          <div class="paper-bar "></div>
+          <div class="paper-body">
+            <h3 class="title"><a href="http://arxiv.org/abs/2608.19664v1" target="_blank" rel="noopener">Multivariate Spatio-Temporal Regression with Penalized Model Selection and an Empirical Application</a></h3>
+            
+            <p class="meta">Ryuei Nishii, Saeko Ohta, Shojiro Tanaka — 2026-08-20 — arxiv</p>
+            <p class="doi">DOI : —</p>
+            <p class="abstract">This paper develops the statistical foundations of a multivariate general nesting spatio-temporal (MGNST) regression framework for analyzing spatial, temporal, and cross-equation dependence among responses. Four parameter matrices represent spatial lag dependence, spatial error dependence,temporal autoregression, and contemporaneous error covariance. Their off-diagonal elements allow dependence to propagate within and across responses. Matrix restrictions yield eleven specifications encompassing multivariate spatial autoregressive models, multivariate spatial error models, vector autoregressive models with exogenous variables, and independent spatio-temporal regressions as special cases.   We establish identifiability conditions using instrumental-variable rank conditions and introduce penalized likelihood estimation and information criteria based on effective degrees of freedom. Monte Carlo experiments examine three data-generating models, three sample sizes, and three levels of spatial dependence. Correct-selection rates under penalized AIC generally increase with sample size and the strength of spatial dependence, while parameter recovery improves as the sample size increases.   For socioeconomic data from 198 municipalities in Japan's Kansai region, penalized AIC selects the full MGNST model, whereas penalized BIC selects a response-wise independent spatial error model. Despite selecting models of different complexity, both criteria support temporal persistence and spatial error dependence. The pAIC-selected MGNST model reduces strong spatial autocorrelation in the responses to negligible residual levels, demonstrating its usefulness for identifying and comparing multivariate spatio-temporal dependence structures.</p>
+          </div>
+        </article>
+        <article class="paper">
+          <div class="paper-bar bar-selected"></div>
+          <div class="paper-body">
+            <h3 class="title selected"><a href="http://arxiv.org/abs/2608.19599v1" target="_blank" rel="noopener">Efficient Poisson Subsampling for the Partially Linear Additive Cox Model</a></h3>
+            <span class="badge">Sélectionné · envoyé par email</span>
+            <p class="meta">Dongxiao Han, Liuquan Sun, Chunjie Wang, Dehui Wang, HaiYing Wang — 2026-08-20 — arxiv</p>
+            <p class="doi">DOI : —</p>
+            <p class="abstract">To address the computational and storage challenges often encountered in large-scale survival data analysis, we propose an efficient Poisson subsampling method for the partially linear additive Cox model. This model provides a flexible yet interpretable framework by incorporating linear covariate effects, additive nonparametric components for nonlinear covariates, and a nonparametric baseline hazard function. The proposed method adopts B-spline basis functions to approximate the nonparametric components and employs the decorrelated score technique to construct a Poisson subsampling-based estimation equation, based on which we establish the asymptotic normality of the resulting estimator and derive the optimal subsampling probabilities according to the L-optimality criterion. Furthermore, we design a two-step adaptive algorithm for practical implementation. The proposed approach enables computationally efficient statistical inference for large-scale survival analysis without processing the full dataset. We validate the performance of the proposed method through extensive simulation studies and a real-world application to a lymphoma cancer dataset, demonstrating its efficiency and accuracy in large-scale settings.</p>
+          </div>
+        </article>
+        <article class="paper">
+          <div class="paper-bar "></div>
+          <div class="paper-body">
+            <h3 class="title"><a href="http://arxiv.org/abs/2608.19377v1" target="_blank" rel="noopener">Heteroscedastic Neural Surrogate Modeling for Robust and Rapid Bayesian Inference in Fusion Plasma Diagnostics</a></h3>
+            
+            <p class="meta">Liyun Zhang, Naoya Mamada, Kentaro Sakai, Takeo Hoshi, Toru Aonishi — 2026-08-19 — arxiv</p>
+            <p class="doi">DOI : —</p>
+            <p class="abstract">Bayesian inference via Markov Chain Monte Carlo (MCMC) provides effective parameter estimation, but its real-time application in complex physical systems is hindered by heavy computational bottlenecks and extreme sensitivity to statistical noise. We address this by proposing a neural-network-based probabilistic surrogate framework for rapid and robust MCMC inference. Using fusion plasma Thomson scattering diagnostics as a challenging, noise-dominated testbed, our approach employs a dual-head architecture to simultaneously estimate the expected physical emission spectrum and the channel-wise intrinsic measurement noise variance. By optimizing a Gaussian Negative Log-Likelihood (GNLL) objective, the learned aleatoric uncertainty dynamically buffers the sampler against pathological shot noise. Evaluations demonstrate that this surrogate framework achieves &gt; 1500x acceleration over exact physical forward models, while simultaneously reducing inference error (RMSE) by &gt;20% compared to standard homoscedastic neural baselines, offering a highly promising paradigm for real-time physical analysis.</p>
+          </div>
+        </article>
+        <article class="paper">
+          <div class="paper-bar "></div>
+          <div class="paper-body">
+            <h3 class="title"><a href="http://arxiv.org/abs/2608.18982v1" target="_blank" rel="noopener">Monroe: A Molecular Foundation Model for In-Context Probabilistic Inference</a></h3>
+            
+            <p class="meta">Blazej Banaszewski, Andrew W. Fitzgibbon — 2026-08-19 — arxiv</p>
+            <p class="doi">DOI : —</p>
+            <p class="abstract">Bioassay activity prediction is often data-limited because drug-discovery datasets rely on time-consuming and expensive wet-lab experiments for data generation and evaluation. This challenge has inspired recent research into molecular foundation models (MFMs), which aim to encode general-purpose chemical knowledge into molecular representations that generalize well in data-constrained scenarios. This paper presents Monroe, a new MFM with several innovations over the existing state of the art: increased scale allowing pre-training on over 81 million molecules from the PM6 quantum chemistry dataset; improved graph representation of stereochemistry; improved training losses including conformer denoising and embedding decorrelation; improved multi-task learning; and the use of a prior-data-fitted model (TabPFN) for downstream in-context prediction. Our evaluations use a principled pairwise comparison framework that measures statistically significant performance differences. Across established Polaris benchmarks, Monroe matches or exceeds existing MFMs, while on activity cliff benchmarks, designed to assess utility for molecular discovery, it achieves significant improvements over prior methods. Finally, ablation and transfer experiments show that PFN-based downstream predictors also substantially improve two leading existing models, MiniMol and CheMeleon, yielding new state-of-the-art variants we call MiniMol_PFN and CheMeleon_PFN, suggesting that our downstream adaptation strategy generalizes beyond Monroe. Source code is at github.com/blazejba/monroe.</p>
+          </div>
+        </article>
+        <article class="paper">
+          <div class="paper-bar "></div>
+          <div class="paper-body">
+            <h3 class="title"><a href="http://arxiv.org/abs/2608.18973v1" target="_blank" rel="noopener">Don't Drop the Singletons: Efficient Inference for Pairwise Experiments with Independent Attrition</a></h3>
+            
+            <p class="meta">Simon Heß, Patrick W. Schmidt — 2026-08-19 — arxiv</p>
+            <p class="doi">DOI : —</p>
+            <p class="abstract">Pairwise randomization can yield substantial efficiency gains in experiments. Yet methodological guidance cautions against pairwise randomization, especially in settings with attrition, partly because common practices for estimation (i.e., pair fixed effects) imply discarding data from incomplete pairs thus exacerbating data loss from attrition. This practice of dropping incomplete pairs reduces statistical power of tests as well as precision of estimates, in paired experiments, compared to designs with less finely stratified treatment assignment. We argue that this concern is misplaced if attrition is independent of treatment status and potential outcomes, and that these issues follow from an inefficient use of the data that remains post-attrition. First, we show how, by using a specific permutation test, it is possible to use all observed units for inference (complete pairs and incomplete pairs where one unit attrits) while still exploiting the pairwise randomization design structure. The test procedure we suggest provides exact size control under the sharp null. Second, we study an optimally weighted estimator that efficiently combines within-pair and across-pair comparisons. Finally, we show that combining these two insights yields a test procedure that dominates the two commonly used inference methods (a paired $t$-test and the two-sample $t$-test) in power, for any level of attrition. Usefully for applied researchers, we show that the efficient procedure can be implemented via a weighted fixed effects regression, straightforward in standard software. In sum, our results provide researchers with practical tools for conducting experiments with pairwise randomization without sacrificing observations or statistical power when facing independent attrition.</p>
+          </div>
+        </article></div>
 </div>
 </body>
 </html>
