@@ -229,7 +229,7 @@ article, dans le même ordre, avec exactement ce format :
             print(f"[debug] Modèles disponibles pour cette clé: {names}")
         except Exception:
             pass
-        return []
+        raise
 
     scored = []
     for item in results:
