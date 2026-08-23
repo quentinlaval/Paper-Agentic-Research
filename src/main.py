@@ -23,6 +23,7 @@ import yaml
 
 SEEN_FILE = "seen_ids.json"
 OPENALEX_URL = "https://api.openalex.org/works"
+OPENALEX_SOURCES_URL = "https://api.openalex.org/sources"
 S2_URL = "https://api.semanticscholar.org/graph/v1/paper/search"
 ARXIV_URL = "http://export.arxiv.org/api/query"
 ATOM_NS = {"atom": "http://www.w3.org/2005/Atom"}
@@ -73,10 +74,29 @@ def fetch_abstract_by_title(title):
         return ""
 
 
-def fetch_openalex(keyword, since_date, per_page, contact_email, api_key):
+def resolve_source_id(name, api_key):
+    """Trouve l'ID OpenAlex d'une source (ex: medRxiv) à partir de son nom."""
+    try:
+        r = requests.get(
+            OPENALEX_SOURCES_URL,
+            params={"search": name, "per-page": 1, "api_key": api_key},
+            timeout=15,
+        )
+        r.raise_for_status()
+        results = r.json().get("results", [])
+        return results[0]["id"] if results else None
+    except Exception as e:
+        print(f"[warn] Résolution de la source '{name}' échouée: {e}")
+        return None
+
+
+def fetch_openalex(keyword, year, per_page, contact_email, api_key, source_id=None):
+    filters = [f"publication_year:{year}"]
+    if source_id:
+        filters.append(f"locations.source.id:{source_id}")
     params = {
         "search": keyword,
-        "filter": f"from_publication_date:{since_date}",
+        "filter": ",".join(filters),
         "per-page": per_page,
         "sort": "publication_date:desc",
         "api_key": api_key,
@@ -101,7 +121,7 @@ def fetch_openalex(keyword, since_date, per_page, contact_email, api_key):
             continue  # toujours pas de résumé : on saute
         records.append({
             "id": w.get("id", ""),
-            "source": "openalex",
+            "source": "medrxiv" if source_id else "openalex",
             "title": title,
             "abstract": abstract,
             "authors": ", ".join(
@@ -256,7 +276,7 @@ article, dans le même ordre, avec exactement ce format :
     return scored
 
 
-def score_all(records, interests, api_key, model, batch_size=8, pause_seconds=10):
+def score_all(records, interests, api_key, model, batch_size=8, pause_seconds=15):
     scored = []
     for i in range(0, len(records), batch_size):
         batch = records[i:i + batch_size]
@@ -412,20 +432,26 @@ def send_email(subject, html_body, user, password, to_addr):
 def main():
     config = load_config()
     since_date = (dt.date.today() - dt.timedelta(days=config["days_back"])).isoformat()
-    today = dt.date.today().isoformat()
+    year = dt.date.today().year
+    api_key = os.environ["OPENALEX_API_KEY"]
     seen_ids = load_seen_ids()
+
+    medrxiv_id = resolve_source_id("medRxiv", api_key) if config.get("include_medrxiv", True) else None
+    openalex_max = config.get("openalex_max_results", config["max_results_per_query"])
 
     all_records = []
     for kw in config["keywords"]:
-        all_records += fetch_openalex(
-            kw, since_date, config["max_results_per_query"], config.get("contact_email"),
-            os.environ["OPENALEX_API_KEY"],
-        )
+        all_records += fetch_openalex(kw, year, openalex_max, config.get("contact_email"), api_key)
+        if medrxiv_id:
+            all_records += fetch_openalex(kw, year, openalex_max, config.get("contact_email"), api_key, source_id=medrxiv_id)
         if config.get("arxiv_categories"):
             all_records += fetch_arxiv(kw, config["arxiv_categories"], config["max_results_per_query"])
 
-    # sécurité supplémentaire : on ne garde que les papiers dans la fenêtre demandée
-    all_records = [r for r in all_records if since_date <= r["date"] <= today]
+    # OpenAlex/medRxiv n'ont souvent qu'une date précise à l'année près : on ne
+    # filtre par date que pour arXiv, qui la fournit toujours. Pour les autres,
+    # c'est la dédup (seen_ids.json) qui garantit qu'on ne revoit pas deux fois
+    # le même article d'une semaine à l'autre.
+    all_records = [r for r in all_records if r["source"] != "arxiv" or r["date"] >= since_date]
 
     candidates = dedupe(all_records, seen_ids)
     candidates = keyword_filter(candidates, config["keywords"])

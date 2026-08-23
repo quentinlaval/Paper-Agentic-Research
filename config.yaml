@@ -4,8 +4,13 @@
 # Soyez spécifique : plus la description est précise, meilleur est le tri.
 # ─────────────────────────────────────────────────────────────
 interests: >
-  Je m'intéresse aux mathématiques appliquées à la vaccinologie,
-  les méthodes statistiques à des études vaccinales, en lien avec le séquençage RNA (bulk RNA-seq, scRNA-seq)
+  Mes centres d’intérêt se situent à l’interface entre **biostatistique, bioinformatique, modélisation mécanistique et pharmacométrie**, avec un focus sur les **vaccins, la dynamique virale et les modèles within-host**.
+  **Analyse de données omiques :** RNA-seq, differential expression, batch effects, normalization, cross-platform normalization, **deconvolution cellulaire**, multi-omics.
+  **Modélisation statistique et mécanistique :** Non-Linear Mixed Effects Models (NLME), Ordinary Differential Equations (ODE), mechanistic models, structural and practical identifiability, parameter estimation.
+  **Applications biologiques :** vaccine research, viral dynamics, within-host models, intégration de données longitudinales et multi-omiques, enfin les données de séquençage de répertoire de récepteur cellulaires de l'immunité (AIRR) sur les lymphocytes B et T.
+  **Outils :** Monolix. 
+  Intérêt particulier pour l’**intégration de méthodes statistiques et de données multi-omiques avec des modèles mécanistiques** afin de caractériser la dynamique des systèmes biologiques et la réponse aux vaccins.
+
 
 # Mots-clés utilisés pour interroger les APIs (OpenAlex, arXiv) et comme
 # filtre de sécurité gratuit avant d'appeler le LLM. Un papier doit
@@ -13,6 +18,19 @@ interests: >
 keywords:
   - "Vaccine"
   - "Statistical"
+  - "Batch effect"
+  - "Normalization"
+  - "RNA-seq"
+  - "Differential expression"
+  - "Deconvolution"
+  - "Multi-omic"
+  - "Cross-platform normalization"
+  - "Non-Linear Mixed Effect Models (NLME)"
+  - "Ordinary Differential Equation (ODE)"
+  - 'Mechanistic models'
+  - "Identifiability"
+  - "Viral dynamics"
+  - "Within-host models"
 
 # Catégories arXiv à surveiller en plus d'OpenAlex.
 # Laissez la liste vide ([]) pour désactiver la source arXiv.
@@ -44,6 +62,15 @@ days_back: 8
 
 # Nombre max de résultats demandés par mot-clé et par source
 max_results_per_query: 15
+
+# Nombre max de résultats OpenAlex/medRxiv par mot-clé (recherche à l'année,
+# pas au jour près : une valeur plus large que max_results_per_query évite
+# de rater des articles récents mal classés par la recherche OpenAlex).
+openalex_max_results: 80
+
+# Inclure medRxiv (résolu automatiquement via l'API OpenAlex, pas de clé
+# supplémentaire nécessaire).
+include_medrxiv: false
 
 # Nombre de papiers gardés dans le digest final (les mieux notés)
 top_n: 20
