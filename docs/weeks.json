@@ -62,5 +62,13 @@
     "filename": "2026-10-05.html",
     "total": 198,
     "selected": 20
+  },
+  {
+    "date": "2026-10-12",
+    "year": 2026,
+    "period_label": "2026-10-04 → 2026-10-12",
+    "filename": "2026-10-12.html",
+    "total": 222,
+    "selected": 20
   }
 ]
